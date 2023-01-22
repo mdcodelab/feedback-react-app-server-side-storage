@@ -7,6 +7,10 @@ const AppContext=React.createContext();
 const AppProvider = ({children}) => {
     const[feedback, setFeedback]=React.useState([]);
     const[loading, setLoading]=React.useState(true);
+    const[edit, setEdit]=React.useState({        //for editing
+      editedItem: {},
+      startEdit: false
+    })
 
 
     //fetch feedback
@@ -14,7 +18,7 @@ const AppProvider = ({children}) => {
       let response = await fetch("http://localhost:5000/feedback?_sort=id&_order_desc");
       let data = await response.json();
       setFeedback(data);
-      //setLoading(false);
+      setLoading(false);
     }
 
     React.useEffect(() => {
@@ -23,21 +27,12 @@ const AppProvider = ({children}) => {
 
   
     
-
-
-
-
-
-
-    const[edit, setEdit]=React.useState({        //for editing
-      editedItem: {},
-      startEdit: false
-
-    })
-    
     //delete (feedback) item
-    function handleDelete(id) {
+    async function handleDelete(id) {
         if(window.confirm("Are you sure you want to delete?")){
+          await fetch(`http://localhost:5000/feedback/${id}`, {
+          method: "DELETE"})
+
           let newItems = feedback.filter((item) => {
             return item.id !==id
           })
@@ -46,10 +41,23 @@ const AppProvider = ({children}) => {
         }
 
         //add (feedback)item
-        function handleAdd(newFeedback) {
+        async function handleAdd(newFeedback) {
+          const response = await fetch('http://localhost:5000/feedback', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newFeedback),
+          })
+
+          const data = await response.json();
+
             console.log(newFeedback);
-            setFeedback([newFeedback, ...feedback])
+
+            setFeedback([data, ...feedback])
             }
+
+
 
             //set item to be updated
             function handleEdit(item) {
@@ -57,11 +65,17 @@ const AppProvider = ({children}) => {
             }
 
             //update feedback items
-            function updateFeedbackItem(id, updateItem) {
+            async function updateFeedbackItem(id, updateItem) {
               console.log(id, updateItem); 
+              const response = await fetch(`http://localhost:5000/feedback/${id}`, {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updateItem)
+              })
+              const data = await response.json();
               return setFeedback(feedback.map((item) => {
                 if(item.id === id) {
-                  return {...updateItem}
+                  return {...data}
                 } else {
                   return {...item}
                 }

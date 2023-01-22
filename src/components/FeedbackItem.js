@@ -15,7 +15,7 @@ const{handleDelete, handleEdit}=useGlobalContext();
     <AiOutlineClose className="icon-close" onClick={() => handleDelete(item.id)}></AiOutlineClose>
     </div>
       <p className="text">{item.text}</p>
-      <p className="date">{}</p>
+      <p className="date">{item.date}</p>
     </div>
   );
 }
