@@ -6,13 +6,15 @@ const AppContext=React.createContext();
 
 const AppProvider = ({children}) => {
     const[feedback, setFeedback]=React.useState([]);
+    const[loading, setLoading]=React.useState(true);
+
 
     //fetch feedback
     async function fetchFeedback () {
       let response = await fetch("http://localhost:5000/feedback?_sort=id&_order_desc");
       let data = await response.json();
-      console.log(data);
       setFeedback(data);
+      //setLoading(false);
     }
 
     React.useEffect(() => {
@@ -80,7 +82,8 @@ const AppProvider = ({children}) => {
         handleAdd,
         handleEdit,
         edit,
-        updateFeedbackItem
+        updateFeedbackItem,
+        loading
     }}>
     {children}
     </AppContext.Provider>

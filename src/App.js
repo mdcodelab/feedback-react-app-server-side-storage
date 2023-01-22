@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Header from "./components/Header"
 import Form from "./components/Form";
 import FeedbackList from "./components/FeedbackList";
-import AboutLink from "./components/AboutLink"
+import AboutLink from "./components/AboutLink";
 //pages
 import About from "./pages/About";
 //context

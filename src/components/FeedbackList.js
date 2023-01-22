@@ -1,11 +1,12 @@
 import React from 'react';
 import FeedbackItem from "./FeedbackItem";
 import {motion, AnimatePresence} from "framer-motion"
+import Spinner from "./Spinner";
 import { useGlobalContext } from '../context';
 
 
 function FeedbackList({deleteFeedback}) {
-  const{feedback}=useGlobalContext();
+  const{feedback, loading}=useGlobalContext();
 
   // return (
   //   <div className="feedback-list">
@@ -15,6 +16,11 @@ function FeedbackList({deleteFeedback}) {
   //     ))}
   //   </div>
   // );
+    
+  if(loading) {
+    return <Spinner></Spinner>
+  }
+
 
   return (
     <div className="feedback-list">
