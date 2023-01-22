@@ -1,11 +1,32 @@
 import { useMotionTemplate } from "framer-motion";
 import React from "react";
-import FeedbackData from "./FeedbackData";
+//import FeedbackData from "./FeedbackData";
 
 const AppContext=React.createContext();
 
 const AppProvider = ({children}) => {
-    const[feedback, setFeedback]=React.useState(FeedbackData);
+    const[feedback, setFeedback]=React.useState([]);
+
+    //fetch feedback
+    async function fetchFeedback () {
+      let response = await fetch("http://localhost:5000/feedback?_sort=id&_order_desc");
+      let data = await response.json();
+      console.log(data);
+      setFeedback(data);
+    }
+
+    React.useEffect(() => {
+      fetchFeedback();
+    }, [])
+
+  
+    
+
+
+
+
+
+
     const[edit, setEdit]=React.useState({        //for editing
       editedItem: {},
       startEdit: false
